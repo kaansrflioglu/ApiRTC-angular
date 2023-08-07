@@ -10,6 +10,41 @@ import { Conversation, UserAgent, Session, Stream } from '@apirtc/apirtc'
 })
 export class AppComponent {
 
+  isCameraEnabled = true;
+  isMicrophoneEnabled = true;
+
+  toggleCamera() {
+    // Get the local stream
+    const localStream: MediaStream = this.videoRef.nativeElement.srcObject;
+
+    if (localStream) {
+      // Get the video tracks from the MediaStream
+      const videoTracks = localStream.getVideoTracks();
+      if (videoTracks.length > 0) {
+        // Toggle the camera by enabling or disabling the video track
+        videoTracks[0].enabled = !videoTracks[0].enabled;
+        // Update the camera status
+        this.isCameraEnabled = videoTracks[0].enabled;
+      }
+    }
+  }
+
+  toggleMicrophone() {
+    // Get the local stream
+    const localStream: MediaStream = this.videoRef.nativeElement.srcObject;
+
+    if (localStream) {
+      // Get the audio tracks from the MediaStream
+      const audioTracks = localStream.getAudioTracks();
+      if (audioTracks.length > 0) {
+        // Toggle the microphone by enabling or disabling the audio track
+        audioTracks[0].enabled = !audioTracks[0].enabled;
+        // Update the microphone status
+        this.isMicrophoneEnabled = audioTracks[0].enabled;
+      }
+    }
+  }
+
   title = 'ApiRTC-angular';
 
   @ViewChild("localVideo") videoRef: ElementRef;
